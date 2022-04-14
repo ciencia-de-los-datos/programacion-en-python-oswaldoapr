@@ -251,7 +251,7 @@ def pregunta_07():
 
     data = sorted(data, key=itemgetter(1))
     agrup = [
-        (letra, [letra[0] for letra in grupo])
+        (int(letra), [letra[0] for letra in grupo])
         for letra, grupo in itertools.groupby(data, key=itemgetter(1))
     ]
 
@@ -287,7 +287,7 @@ def pregunta_08():
 
     data = sorted(data, key=itemgetter(1))
     agrup = [
-        (letra, sorted(set([letra[0] for letra in grupo])))
+        (int(letra), sorted(set([letra[0] for letra in grupo])))
         for letra, grupo in itertools.groupby(data, key=itemgetter(1))
     ]
 
