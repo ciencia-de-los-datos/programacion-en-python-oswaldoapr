@@ -13,6 +13,11 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 """
 
 
+from collections import Counter
+from operator import itemgetter
+import itertools
+
+
 def pregunta_01():
     """
     Retorne la suma de la segunda columna.
@@ -21,7 +26,15 @@ def pregunta_01():
     214
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    suma = sum([int(line[1]) for line in data])
+
+    return suma
 
 
 def pregunta_02():
@@ -39,7 +52,17 @@ def pregunta_02():
     ]
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    letras = [line[0] for line in data]
+    let_count = Counter(letras).most_common()
+    let_count = list(sorted(let_count, key=itemgetter(0)))
+    
+    return let_count
 
 
 def pregunta_03():
@@ -57,7 +80,20 @@ def pregunta_03():
     ]
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    data = sorted(data, key=itemgetter(0))
+    agrup = {
+        letra: sum([int(letra[1]) for letra in grupo])
+        for letra, grupo in itertools.groupby(data, key=itemgetter(0))
+    }
+    agrup = [(letra, agrup[letra]) for letra in agrup]
+
+    return agrup
 
 
 def pregunta_04():
@@ -82,7 +118,17 @@ def pregunta_04():
     ]
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    fechas = [line[2].split('-')[1] for line in data]
+    fech_count = Counter(fechas).most_common()
+    fech_count = list(sorted(fech_count, key=itemgetter(0)))
+
+    return fech_count
 
 
 def pregunta_05():
@@ -100,7 +146,28 @@ def pregunta_05():
     ]
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    data = sorted(data, key=itemgetter(0))
+    agrup = {
+        letra: list(grupo)
+        for letra, grupo in itertools.groupby(data, key=itemgetter(0))
+    }
+
+    agrup = [
+        (
+            letra,
+            max([int(row[1]) for row in agrup[letra]]),
+            min([int(row[1]) for row in agrup[letra]])
+        )
+        for letra in agrup 
+    ]
+
+    return agrup
 
 
 def pregunta_06():
@@ -125,7 +192,34 @@ def pregunta_06():
     ]
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    diccs = [
+        dicc.split(':')
+        for line in data
+        for dicc in line[4].split(',')
+    ]
+
+    diccs = sorted(diccs, key=itemgetter(0))
+    agrup = {
+        clave: list(grupo)
+        for clave, grupo in itertools.groupby(diccs, key=itemgetter(0))
+    }
+
+    agrup = [
+        (
+            clave,
+            min([int(row[1]) for row in agrup[clave]]),
+            max([int(row[1]) for row in agrup[clave]])
+        )
+        for clave in agrup 
+    ]
+
+    return agrup
 
 
 def pregunta_07():
@@ -149,7 +243,19 @@ def pregunta_07():
     ]
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    data = sorted(data, key=itemgetter(1))
+    agrup = [
+        (letra, [letra[0] for letra in grupo])
+        for letra, grupo in itertools.groupby(data, key=itemgetter(1))
+    ]
+
+    return agrup
 
 
 def pregunta_08():
@@ -174,7 +280,18 @@ def pregunta_08():
     ]
 
     """
-    return
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    data = sorted(data, key=itemgetter(1))
+    agrup = [
+        (letra, sorted(set([letra[0] for letra in grupo])))
+        for letra, grupo in itertools.groupby(data, key=itemgetter(1))
+    ]
+
+    return agrup
 
 
 def pregunta_09():
@@ -197,7 +314,25 @@ def pregunta_09():
     }
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    diccs = [
+        dicc.split(':')
+        for line in data
+        for dicc in line[4].split(',')
+    ]
+
+    diccs = sorted(diccs, key=itemgetter(0))
+    agrup = {
+        clave: len(list(grupo))
+        for clave, grupo in itertools.groupby(diccs, key=itemgetter(0))
+    }
+
+    return agrup
 
 
 def pregunta_10():
@@ -218,7 +353,22 @@ def pregunta_10():
 
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    agrup = [
+        (
+            line[0],
+            len(line[3].split(',')),
+            len(line[4].split(','))
+        ) 
+        for line in data
+    ]
+
+    return agrup
 
 
 def pregunta_11():
@@ -239,7 +389,21 @@ def pregunta_11():
 
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    letras = [[letra, line[1]] for line in data for letra in line[3].split(',')]
+
+    letras = sorted(letras, key=itemgetter(0))
+    agrup = {
+        clave: sum([int(num[1]) for num in grupo])
+        for clave, grupo in itertools.groupby(letras, key=itemgetter(0))
+    }
+
+    return agrup
 
 
 def pregunta_12():
@@ -257,4 +421,24 @@ def pregunta_12():
     }
 
     """
-    return
+
+    with open("data.csv", 'r') as file:
+        data = file.readlines()
+    data = [line.replace('\n', '') for line in data]
+    data = [line.split('\t') for line in data]
+
+    diccs = [
+        [
+            line[0], dicc.split(':')[1]
+        ]
+        for line in data
+        for dicc in line[4].split(',')
+    ]
+
+    diccs = sorted(diccs, key=itemgetter(0))
+    agrup = {
+        clave: sum([int(num[1]) for num in grupo])
+        for clave, grupo in itertools.groupby(diccs, key=itemgetter(0))
+    }
+
+    return agrup
